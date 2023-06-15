@@ -1,0 +1,295 @@
+﻿@model WebAppSimulador.Entities.Invoice
+@{
+    double? CalcularIva(double? total, double? iva) => (iva / 100) * total;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Facturas</title>
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-size: xx-small;
+            font-weight: bold;
+            margin: 0;
+            padding: 0;
+            background-color: aliceblue;
+        }
+
+        header {
+            margin: auto;
+            margin-top: 20px;
+        }
+
+        .flex-center {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-self: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .flex-row {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-self: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .text {
+            margin: auto;
+            vertical-align: middle;
+        }
+
+        .small {
+            font-size: small;
+        }
+
+        .logos {
+            font-size: 15px;
+        }
+
+        .check {
+            color: red;
+        }
+
+        .date1 {
+            margin-top: 30px;
+        }
+
+        .date2 {
+            border-style: solid;
+            border-radius: 1px;
+        }
+
+        input {
+            text-align: center;
+        }
+
+        .d1-groupA {
+            border-style: solid;
+            border-radius: 1px;
+            margin: auto;
+            padding: 10px;
+            height: 180px;
+        }
+
+        .d1-groupB {
+            border-style: solid;
+            border-radius: 1px;
+            margin: auto;
+            padding: 10px;
+            height: 180px;
+        }
+
+        #factura, #fecha, #id-cliente, #terminos {
+            background-color: rgb(127, 180, 255);
+            color: white;
+            text-shadow: black 0.1em 0.1em 0.2em
+        }
+
+        .d2-groupA {
+            margin-top: 15px;
+            margin-left: 5px;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .table {
+            font-size: 15px;
+            border-collapse: collapse;
+            border: 2px solid #000000;
+        }
+
+        th {
+            padding: 5px;
+            border: 2px solid #000000;
+        }
+
+        td {
+            padding: 5px;
+            border: 2px dotted #000000;
+        }
+
+        .erase {
+            background-color: rgb(255, 255, 255);
+            border: 0;
+        }
+
+        .c-azul {
+            background-color: rgb(127, 180, 255);
+            border: 2px solid #000000;
+        }
+
+        .celeste {
+            background-color: rgba(127, 180, 255, 0.249);
+            border: 2px solid #000000;
+        }
+
+        .btn-factura {
+            margin-top: 20px;
+            font-size: large;
+            border: 2px solid #000000;
+            background-color: cadetblue;
+            color: white;
+            padding: 10px;
+            text-shadow: black 0.1em 0.1em 0.2em
+        }
+
+        #CompaniaRFC, #RazonSocial, #FachaFactura, #ClienteRFC, #ClienteCorreo, #ClienteApellidos, #ClienteNombre {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body class="flex-center" class="text">
+    <page size="A4">
+        <header class="flex-row">
+            <h1 class="text logos"><img src="https://boletin.com.mx/wp-content/uploads/2022/07/Facturacion-Box-Factura-770x513.jpg" class="logo"> @Model.Company.NombreCompania</h1>
+            <h1 class="text check">FACTURA:</h1>
+        </header>
+        <main>
+            <div class="flex-row date1">
+                <div class="flex-center d1-groupA">
+
+                    <h1 class="text small">[RAZÓN SOCIAL]:&nbsp;&nbsp; <span>@Model.Company.RazonSocial</span></h1><br /><br />
+                    <h1 class="text small">[R.F.C.]:&nbsp;&nbsp; <span>@Model.Company.RFC</span></h1><br /><br />
+                    <h1 class="text small">
+                        [DIRECCIÓN]:&nbsp;&nbsp;<span>@Model.Company.Direccion</span>
+                    </h1><br>
+
+                </div>
+                <div class="flex-center d1-groupB">
+                    <h1 class="text small">NO° DE FACTURA:&nbsp;&nbsp; <span>@Model.Company.NoFactura</span></h1><br>
+                    <h1 class="text small">FECHA:&nbsp;&nbsp;<span>@Model.Company.FachaFactura</span></h1><br>
+                    <h1 class="text small">
+                        DOCUMENTO:&nbsp;&nbsp;<span>@Model.Company.Documento</span>
+                    </h1><br>
+                    <h1 class="text small">REGIMEN FISCAL:&nbsp;&nbsp;<span>@Model.Company.RegimenFiscal</span></h1><br />
+                    <h1 class="text small">
+                        LUGAR EXPEDICIÓN C.P:&nbsp;&nbsp; <span>@Model.Company.LugarExpedicion</span>
+                    </h1><br />
+                </div>
+            </div><br><br>
+
+            <h1 class="text">DATOS DEL CLIENTE</h1><br><br>
+
+            <div class="flex-center date2">
+                <div class="d2-groupA">
+                    <h1 class="text small">[NOMBRE]:&nbsp;&nbsp; <span>@Model.User.Nombre</span></h1><br />
+                    <h1 class="text small">[CORREO ELECTRÓNICO]:&nbsp;&nbsp; <span>@Model.User.CorreoElectronico</span></h1><br />
+                    <h1 class="text small">[R.F.C.]:&nbsp;&nbsp; <span>@Model.User.RFC</span></h1><br />
+                    <h1 class="text small">[USO DE CFDI]:&nbsp;&nbsp; <span>@Model.User.CFDI</span></h1><br />
+                    <h1 class="text small">[METODO DE PAGO]:&nbsp;&nbsp; <span>@Model.User.MetodoPago</span></h1><br />
+                    <h1 class="text small">[FORMA DE PAGO]:&nbsp;&nbsp; <span>@Model.User.FormaPago</span></h1><br />
+                    <h1 class="text small">[DIRECCIÓN]:&nbsp;&nbsp;<span>@Model.User.Direccion</span></h1><br />
+
+                    <br>
+                </div>
+                <div class="d2-groupB">
+                    <hr />
+
+
+                    <table class="table">
+                        <tr>
+                            <th class="c-azul">CLAVE UNIDAD</th>
+                            <th class="c-azul">CLAVE PRODUCTO</th>
+                            <th class="c-azul">DESCRIPCIÓN</th>
+                            <th class="c-azul">CANTIDAD</th>
+                            <th class="c-azul">PRECIO</th>
+                            <th class="c-azul">TOTAL</th>
+                        </tr>
+
+                        @foreach (var produc in Model.Compra.Products)
+                        {
+                            <tr>
+                                <td>
+                                    <span>@produc.ClaveUnidad</span>
+                                </td>
+                                <td>
+                                    <span>@produc.ClaveProducto</span>
+                                </td>
+                                <td>
+                                    <span>@produc.Descripcion</span>
+                                </td>
+                                <td>
+                                    <span>@produc.Cantidad</span>
+                                </td>
+                                <td>
+                                    <span>@produc.Precio</span>
+                                </td>
+                                <td>
+                                    <span>@produc.Total</span>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">SUBTOTAL</td>
+                            <td class="c-azul celeste">@Model.Conceptos.Subtotal</td>
+                        </tr>
+
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">% DE IMPUESTO</td>
+                            <td class="c-azul celeste">
+                                <span>@Model.Conceptos.IVA</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">TOTAL CON IMPUESTO</td>
+                            <td class="c-azul celeste">
+                                @try
+                                {
+                                    @CalcularIva(Model.Compra.Products.Sum(x => x.Total), Model.Conceptos.IVA)!.Value.ToString("0.00")
+                                }
+                                catch (Exception) { }
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">TOTAL</td>
+                            <td class="c-azul celeste"><span>@Model.Conceptos.Total</span></td>
+                        </tr>
+                    </table>
+                </div>
+                <br><br>
+            </div><br><br><br><br><br>
+        </main>
+        <footer>
+        </footer>
+    </page>
+</body>
+
+</html>

@@ -1,0 +1,179 @@
+﻿@page
+@model IndexModel
+@using WebAppSimulador.Common.Components
+
+@{
+    ViewData["Title"] = "Home page";
+
+    double? CalcularIva(double? total, double? iva) => (iva / 100) * total;
+
+    double? GetTotal(double? total, double? impuestos) => total + impuestos;
+}
+
+
+
+
+<link rel="stylesheet" href="~/css/style.css">
+<form method="post">
+    <!-- Loader -->
+    <div class="loader" style="display: @(Model.IsLoading ? "block" : "none")"></div>
+
+    <section class="flex-center" class="text">
+        <header class="flex-row">
+            <h1 class="text logos">
+                <img src="https://boletin.com.mx/wp-content/uploads/2022/07/Facturacion-Box-Factura-770x513.jpg" class="logo">
+                <label asp-for="InvoiceModel.Compania">Compañia:</label>
+                <input asp-for="InvoiceModel.Compania" />
+            </h1>
+        </header>
+        <main>
+            <div class="flex-row date1">
+                <div class="flex-center d1-groupA">
+
+                    <h1 class="text small">[RAZÓN SOCIAL]: <input asp-for="InvoiceModel.RazonSocial" maxlength="100"/></h1><br /><br />
+                    <h1 class="text small">[R.F.C.]:<input asp-for="InvoiceModel.CompaniaRFC" maxlength="15" /></h1>
+                    <h1 class="text small">
+                        [DIRECCIÓN]:
+                        <textarea asp-for="InvoiceModel.Direccion" rows="4" cols="40" maxlength="150"></textarea>
+                    </h1><br>
+
+                </div>
+                <div class="flex-center d1-groupB">
+                    <h1 class="text small">NO° DE FACTURA: <input asp-for="InvoiceModel.NoFactura" readonly /></h1><br>
+                    <h1 class="text small">FECHA: <input asp-for="InvoiceModel.FachaFactura" readonly /></h1><br>
+                    <h1 class="text small">
+                        TIPO DOCUMENTO: @Html.DropDownListFor(model => model.InvoiceModel.TipoDocumento, HtmlElements.ListTypeDocuments, "-- Seleccionar opción --", new { @class = "" })
+                    </h1><br>
+                    <h1 class="text small">REGIMEN FISCAL: @Html.DropDownListFor(model => model.InvoiceModel.TipoRegimenFiscal, HtmlElements.ListRegimenFiscal, "-- Seleccionar opción --", new { @class = "" })</h1>
+                    <h1 class="text small">
+                        LUGAR EXPEDICIÓN C.P: <input asp-for="InvoiceModel.CpLugarExpedicion" maxlength="5" />
+                    </h1>
+                </div>
+            </div><br><br>
+
+            <h1 class="text">DATOS DEL CLIENTE</h1><br><br>
+
+            <div class="flex-center date2">
+                <div class="d2-groupA">
+                    <h1 class="text small">[NOMBRE]: <input asp-for="InvoiceModel.ClienteNombre" maxlength="50"/></h1><br />
+                    <h1 class="text small">[APELLIDOS]: <input asp-for="InvoiceModel.ClienteApellidos" maxlength="50" /></h1><br />
+                    <h1 class="text small">[CORREO ELECTRÓNICO]: <input asp-for="InvoiceModel.ClienteCorreo" maxlength="20" /></h1><br />
+                    <h1 class="text small">[R.F.C.]:<input asp-for="InvoiceModel.ClienteRFC" maxlength="15" /></h1><br />
+                    <h1 class="text small">[USO DE CFDI]: @Html.DropDownListFor(model => model.InvoiceModel.TipoUsoCFDI, HtmlElements.ListCFDI, "-- Seleccionar opción --", new { @class = "" })</h1><br />
+                    <h1 class="text small">[METODO DE PAGO]: @Html.DropDownListFor(model => model.InvoiceModel.TipoMetodoPago, HtmlElements.ListMetodoPago, "-- Seleccionar opción --", new { @class = "" })</h1><br />
+                    <h1 class="text small">[FORMA DE PAGO]: @Html.DropDownListFor(model => model.InvoiceModel.TipoFormaPago, HtmlElements.ListFormaDePago, "-- Seleccionar opción --", new { @class = "" })</h1><br />
+                    <h1 class="text small">
+                        [DIRECCIÓN]:
+                        <textarea asp-for="InvoiceModel.ClienteDireccion" rows="4" cols="40" maxlength="150"></textarea>
+                    </h1><br />
+
+                    <br>
+
+                </div>
+                <div class="d2-groupB">
+                    <br />
+                    <hr />
+
+                    <h1 class="text small">[IVA]:<input asp-for="InvoiceModel.Inpuesto" /><span>&nbsp;%</span></h1><br />
+                    <table class="table">
+                        <tr>
+                            <th class="c-azul">CLAVE UNIDAD</th>
+                            <th class="c-azul">CLAVE PRODUCTO</th>
+                            <th class="c-azul">DESCRIPCIÓN</th>
+                            <th class="c-azul">CANTIDAD</th>
+                            <th class="c-azul">PRECIO</th>
+                            <th class="c-azul">TOTAL</th>
+                            <th class="c-azul"></th>
+                        </tr>
+
+                        @for (int i = 0; i < Model.InvoiceModel.Elementos.Count; i++)
+                        {
+                            <tr id="tr_producto_@i">
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].ClaveUnidad" />
+                                </td>
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].ClaveProducto" />
+                                </td>
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].Descripcion" />
+                                </td>
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].Cantidad" data-index-cantidad="@i" />
+                                </td>
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].Precio" data-index-precio="@i" onblur="calcularTotal(this)" />
+                                </td>
+                                <td>
+                                    <input asp-for="InvoiceModel.Elementos[i].Total" data-index-total="@i" readonly required />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="eliminarProducto(@i)">Eliminar</button>
+                                </td>
+                            </tr>
+                        }
+
+
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">SUBTOTAL</td>
+                            <td class="c-azul celeste">@Model.InvoiceModel.Elementos.Sum(x=>x.Total)!.Value.ToString("0.00")</td>
+                        </tr>
+
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">% DE IMPUESTO</td>
+                            <td class="c-azul celeste">
+                                @try
+                                {
+
+                                    @CalcularIva(Model.InvoiceModel.Elementos.Sum(x => x.Total), Model.InvoiceModel.Inpuesto)!.Value.ToString("0.00")
+                                }
+                                catch (Exception)
+                                {
+
+
+                                }
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="erase"></td>
+                            <td class="c-azul">TOTAL</td>
+                            <td class="c-azul celeste">
+                                @try
+                                {
+                                    @GetTotal(Model.InvoiceModel.Elementos.Sum(x => x.Total),CalcularIva(Model.InvoiceModel.Elementos.Sum(x => x.Total), Model.InvoiceModel.Inpuesto))!.Value.ToString("0.00")
+                                }
+                                catch (Exception)
+                                {
+                                }
+
+
+                            </td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="btn btn-success" formaction="@Url.Page("Index", "AddProduct")">Agregar</button>
+
+                </div>
+                <br />
+                <button class="btn-factura" type="submit" formaction="@Url.Page("Index", "CreateInvoice")">GENERAR FACTURA</button>
+                <br><br>
+            </div><br><br><br><br><br>
+        </main>
+        <footer>
+        </footer>
+    </section>
+</form>

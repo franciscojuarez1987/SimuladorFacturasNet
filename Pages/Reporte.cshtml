@@ -1,0 +1,145 @@
+﻿@page
+@model ReporteModel
+@{
+    ViewData["Title"] = "Reporte";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>Vista donde se creara el reporte de facturas</p>
+
+<div class="col-12">
+    <div class="row">
+        <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="XmlFiles">Seleccione los XML de las facturas a procesar:</label>
+            <input type="file" class="form-control-file" id="XmlFiles" name="XmlFiles" accept=".xml" multiple>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Subir</button>
+    </form>
+    </div>
+    <br />
+    <div class="row">
+        <form method="post">
+            <button type="submit" class="btn btn-success" formaction="@Url.Page("Reporte", "GeneraReporte")">Generar Reporte</button>
+        </form>
+    </div>
+</div>
+
+
+
+<hr />
+<section>
+    @if (Model.EntityList != null && Model.EntityList.Count > 0)
+    {
+        <div class="col-12">
+            
+            <div class="row form-control">
+                <h5>CLIENTES</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <th>NOMBRE</th>
+                            <th>CORREO</th>
+                            <th>RFC</th>
+                            <th>CFDI</th>
+                            <th>METODO DE PAGO</th>
+                            <th>FORMA DE PAGO</th>
+                            <th>DIRECCIÓN</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in Model.EntityList)
+                        {
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <tr>
+                                <td>@entity.User.Nombre</td>
+                                <td>@entity.User.CorreoElectronico</td>
+                                <td>@entity.User.RFC</td>
+                                <td>@entity.User.CFDITipo - @entity.User.CFDI</td>
+                                <td>@entity.User.TipoMetodoPago - @entity.User.MetodoPago</td>
+                                <td>@entity.User.TipoFormaPago - @entity.User.FormaPago</td>
+                                <td>@entity.User.Direccion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <div class="row form-control">
+                <h5>EMISOR</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <th>#Factura</th>
+                            <th>Nombre</th>
+                            <th>RFC</th>
+                            <th>C.P</th>
+                            <th>Fecha</th>
+                            <th>Documento</th>
+                            <th>Regimen Fiscal</th>
+                            <th>Razon Social</th>
+                            <th>Dirección</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in Model.EntityList)
+                        {
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <tr>
+                                <td>@entity.Company.NoFactura</td>
+                                <td>@entity.Company.NombreCompania</td>
+                                <td>@entity.Company.RFC</td>
+                                <td>@entity.Company.LugarExpedicion</td>
+                                <td>@entity.Company.FachaFactura</td>
+                                <td>@entity.Company.TipoDocumento - @entity.Company.NombreCompania</td>
+                                <td>@entity.Company.TipoRegimenFiscal - @entity.Company.RegimenFiscal</td>
+                                <td>@entity.Company.RazonSocial</td>
+                                <td>@entity.Company.Direccion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <br><br>
+            <div class="row form-control">
+                <h5>RECEPTOR</h5>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <th>Nombre</th>
+                            <th>RFC</th>
+                            <th>Correo</th>
+                            <th>CFDI</th>
+                            <th>MetodoPago</th>
+                            <th>FormaPago</th>
+                            <th>Direccion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var entity in Model.EntityList)
+                        {
+                            <!-- Agrega las columnas adicionales de cada entidad a mostrar-->
+                            <tr>
+                                <td>@entity.User.Nombre</td>
+                                <td>@entity.User.RFC</td>
+                                <td>@entity.User.CorreoElectronico</td>
+                                <td>@entity.User.CFDITipo - @entity.User.CFDI</td>
+                                <td>@entity.User.TipoMetodoPago - @entity.User.MetodoPago</td>
+                                <td>@entity.User.TipoFormaPago - @entity.User.FormaPago</td>
+                                <td>@entity.User.Direccion</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h3 class="text-danger">Ingrese factura</h3>
+    }
+</section>

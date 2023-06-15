@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="img/oficina.png">
+    <title>Simulador de Facturas</title>
+</head>
+
+<body class="flex-center" class="text">
+    <header class="flex-row">
+        <h1 class="text logos"><img src="img/oficina.png" class="logo">COMPANY NAME</h1>
+        <h1 class="text check">FACTURA</h1>
+    </header>
+    <main>
+        <div class="flex-row date1">
+            <div class="flex-center d1-groupA">
+                <h1 class="text small">[Calle]: <input type="text" id="calle"></h1><br>
+                <h1 class="text small">[Ciudad, provincia y código postal]: <input type="text" id="ciudad"></h1><br>
+                <h1 class="text small">[Número telefónico]: <input type="text" id="cel"></h1>
+            </div>
+            <div class="flex-center d1-groupB">
+                <h1 class="text small">NO° DE FACTURA: <input type="text" id="factura"></h1><br>
+                <h1 class="text small">FECHA: <input type="text" id="fecha"></h1><br>
+                <h1 class="text small">ID. CLIENTE: <input type="text" id="id-cliente"></h1><br>
+                <h1 class="text small">TERMINOS: <input type="text" id="terminos"></h1>
+            </div>
+        </div><br><br>
+
+        <h1 class="text">DATOS DEL CLIENTE</h1><br><br>
+
+        <div class="flex-center date2">
+            <div class="d2-groupA">
+                <h1 class="text small">[Nombre]: <input type="text" id="date-nombre"></h1><br>
+                <h1 class="text small">[Nombre de la empresa]: <input type="text" id="date-nombre-empresa"></h1><br>
+                <h1 class="text small">[Calle]: <input type="text" id="date-calle"></h1><br>
+                <h1 class="text small">[Ciudad, provincia y código postal]: <input type="text" id="date-ciudad"></h1>
+                <br>
+                <h1 class="text small">[Dirección de correo electrónico]: <input type="text" id="date-correo"></h1><br>
+            </div>
+            <div class="d2-groupB">
+                <table class="table">
+                    <tr>
+                        <th class="c-azul">DESCRIPCIÓN</th>
+                        <th class="c-azul">CANTIDAD</th>
+                        <th class="c-azul">UNIDAD</th>
+                        <th class="c-azul">PRECIO</th>
+                    </tr>
+
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+                    <tr> <td></td> <td></td> <td></td> <td></td> </tr>
+
+                    <tr>
+                        <td class="erase"></td> <td class="erase"></td>
+                        <td class="c-azul">SUBTOTAL</td>
+                        <td class="c-azul celeste"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="erase"></td> <td class="erase"></td>
+                        <td class="c-azul">% DE IMPUESTO</td>
+                        <td class="c-azul celeste"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="erase"></td> <td class="erase"></td>
+                        <td class="c-azul">TOTAL CON IMPUESTO</td>
+                        <td class="c-azul celeste"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="erase"></td> <td class="erase"></td>
+                        <td class="c-azul">TOTAL</td>
+                        <td class="c-azul celeste"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <button class="btn-factura">GENERAR FACTURA</button>  
+            <br><br>
+        </div><br><br><br><br><br>
+    </main>
+    <footer>
+    </footer>
+</body>
+
+</html>
