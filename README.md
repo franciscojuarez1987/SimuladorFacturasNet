@@ -1,4 +1,4 @@
 # SimuladorFacturasNet
-Simulador de faturas 
+Simulador de facturas 
 
-#### El sumulador tiene como objetivo sumular facturas electronicas
+#### El simulador tiene como objetivo simular facturas electrónicas.
